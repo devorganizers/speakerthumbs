@@ -1,0 +1,64 @@
+speakerthumbs
+
+CRUD de eventos (event) e palestras (talk)
+
+Models:
+	event:
+	- name
+	- startdate
+	- enddate
+	- location
+	- description
+
+	talk:
+	- name
+	- description
+	- event
+
+Views
+
+	CRUD:
+		4 telas para cada entidade:
+			- lista
+				Lista de todas as entidades, cada item da lista possui um link para edição e detalhes, e um botão para remoção.
+			- criação
+				Tela que possui todos os campos necessários para se criar um entidade e um botão para criar a entidade.
+			- edição
+				Tela que possui todos os campos editáveis da entidade e um botão para salvar as alterações.
+			- detalhes
+				Tela que mostra todos os atributos de uma entidade.
+
+	Tela principal:
+		Possui uma barra de navegação com links para a lista de cada uma das entidades, link para uma tela de login (ou campo de usuário e senha e um botão), link para um tela de cadastro de usuário.
+
+	Tela de login (pode não existir)
+
+	Tela de cadastro de usuário:
+		Cadastro de usuário que deve ter e-mail, senha e um botão para confirmar o cadastro.
+
+Tarefas:
+
+1 Criar html e css das telas de CRUD e tela principal com place holders para os dados:
+	1.1 Tela principal
+	1.2 Lista de eventos
+	1.3 Lista de palestras
+	1.4 Criação de evento
+	1.5 Criação de palestra
+	1.6 Edição de evento
+	1.7 Edição de palestra
+	1.8 Detalhes de evento
+	1.9 Detalhes de palestra
+	- Utilizar o bootstrap para fazer algo decente
+
+2 Criar servidor usando express e node para servir as telas criadas
+
+3 Colocar autenticação no servidor
+	- Dar uma olhada nesse tutorial: http://code.tutsplus.com/tutorials/authenticating-nodejs-applications-with-passport--cms-21619
+	- Se necessário criar tela de cadastro de usuário
+	- Se necessário criar tela de login
+
+4 Criar o modelo de banco de dados:
+	4.1 Criar modelos das entidades no banco
+	4.2 Criar funções para cada tela (lista, detalhes, edição e criação) para cada entidade
+
+5 Colocar funcionalidade nos botões da interface, linkando server e client.
