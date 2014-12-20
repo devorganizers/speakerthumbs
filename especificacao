@@ -20,7 +20,7 @@ Views
 	CRUD:
 		4 telas para cada entidade:
 			- lista
-				Lista de todas as entidades, cada item da lista possui um link para edição e detalhes, e um botão para remoção.
+				Lista de todas as entidades, possui um botão para de criação de novas entidades, cada item da lista possui um link para edição e detalhes, e um botão para remoção.
 			- criação
 				Tela que possui todos os campos necessários para se criar um entidade e um botão para criar a entidade.
 			- edição
