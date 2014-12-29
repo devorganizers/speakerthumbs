@@ -1,41 +1,99 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index');
-});
+var isAuthenticated = function(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
 
-router.get('/event-list', function(req, res) {
-	res.render('event-list', {isEventActive: 'active'});
-});
+module.exports = function(passport) {
+    /* GET home page. */
+    router.get('/', function(req, res) {
+      res.render('index');
+    });
 
-router.get('/event-create', function(req, res) {
-    res.render('event-create', {isEventActive: 'active'});
-});
+    router.post('/login', passport.authenticate('login', {
+        successRedirect: '/home',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
 
-router.get('/event-edit', function(req, res) {
-    res.render('event-edit', {isEventActive: 'active'});
-});
+    router.get('/signup', function(req, res) {
+        res.render('register', {message: req.flash('message')});
+    });
 
-router.get('/event-detail', function(req, res) {
-    res.render('event-detail', {isEventActive: 'active'});
-});
+    router.post('/signup', passport.authenticate('signup', {
+        successRedirect: '/home',
+        failureRedirect: '/signup',
+        failureFlash: true
+    }));
 
-router.get('/talk-list', function(req, res) {
-    res.render('talk-list', {isTalkActive: 'active'});
-});
+    router.get('/signout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
 
-router.get('/talk-create', function(req, res) {
-    res.render('talk-create', {isTalkActive: 'active'});
-});
+    router.get('/home', isAuthenticated, function(req, res) {
+        res.render('home', {user: req.user});
+    })
 
-router.get('/talk-edit', function(req, res) {
-    res.render('talk-edit', {isTalkActive: 'active'});
-});
+    router.get('/event-list', isAuthenticated, function(req, res) {
+        res.render('event-list', {
+            user: req.user,
+            isEventActive: 'active'
+        });
+    });
 
-router.get('/talk-detail', function(req, res) {
-    res.render('talk-detail', {isTalkActive: 'active'});
-});
+    router.get('/event-create', isAuthenticated, function(req, res) {
+        res.render('event-create', {
+            user: req.user,
+            isEventActive: 'active'
+        });
+    });
 
-module.exports = router;
+    router.get('/event-edit', isAuthenticated, function(req, res) {
+        res.render('event-edit', {
+            user: req.user,
+            isEventActive: 'active'
+        });
+    });
+
+    router.get('/event-detail', isAuthenticated, function(req, res) {
+        res.render('event-detail', {
+            user: req.user,
+            isEventActive: 'active'
+        });
+    });
+
+    router.get('/talk-list', isAuthenticated, function(req, res) {
+        res.render('talk-list', {
+            user: req.user,
+            isTalkActive: 'active'
+        });
+    });
+
+    router.get('/talk-create', isAuthenticated, function(req, res) {
+        res.render('talk-create', {
+            user: req.user,
+            isTalkActive: 'active'
+        });
+    });
+
+    router.get('/talk-edit', isAuthenticated, function(req, res) {
+        res.render('talk-edit', {
+            user: req.user,
+            isTalkActive: 'active'
+        });
+    });
+
+    router.get('/talk-detail', isAuthenticated, function(req, res) {
+        res.render('talk-detail', {
+            user: req.user,
+            isTalkActive: 'active'
+        });
+    });
+
+    return router;
+}

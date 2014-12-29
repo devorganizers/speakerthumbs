@@ -5,7 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var dbConfig = require('./db');
+var mongoose = require('mongoose');
+
+mongoose.connect(dbConfig.url);
 
 var app = express();
 
@@ -21,6 +24,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({
+    secret: 'mySecretKey',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+var flash = require('connect-flash');
+app.use(flash());
+
+var initPassport = require('./passport/init');
+initPassport(passport);
+
+var routes = require('./routes/index')(passport);
 app.use('/', routes);
 
 // catch 404 and forward to error handler
