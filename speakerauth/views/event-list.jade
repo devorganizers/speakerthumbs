@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    div.container-fluid
+        a(class='btn btn-primary btn-create')
+            i.fa.fa-plus-circle
+            |  Criar Evento
+        div.list-group
+            each val in [1, 2, 3]
+                span.list-group-item
+                    a(class='btn' href='#')= 'Evento ' + val
+                    span
+                        a(class='btn' href='#')
+                            span.glyphicon.glyphicon-pencil
+                        a(class='btn' href='#')
+                            span.glyphicon.glyphicon-trash

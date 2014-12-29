@@ -1,0 +1,45 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+
+        title SpeakerThumbs
+
+        link(rel='stylesheet', href='/css/bootstrap.min.css')
+        link(rel='stylesheet', href='/css/bootstrap-datetimepicker.min.css')
+        link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css')
+        link(rel='stylesheet', href='/css/style.css')
+    body
+        div.container
+            nav(class='navbar navbar-default', role='navigation')
+                div.container-fluid
+                    div.navbar-header
+                        button(type='button', class='navbar-toggle collapsed', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+                            span.sr-only Toggle navigation
+                            span.icon-bar
+                            span.icon-bar
+                            span.icon-bar
+                        a(class='navbar-brand', href='#') SpeakerThumbs
+                    div(id='navbar', class='navbar-collapse collapse')
+                        ul.nav.navbar-nav
+                            li(class=isEventActive)
+                                a(href='#') Events
+                            li(class=isTalkActive)
+                                a(href='#') Talks
+                        form(class='navbar-form navbar-right', role='login')
+                            div.form-group
+                                input(type='text', name='username', class='form-control', placeholder='username')
+                                input(type='password', name='password', class='form-control', placeholder='password')
+                            button(type='submit', class='btn btn-default') Login
+
+
+            block content
+
+            script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
+            script(src='/js/bootstrap.min.js')
+            script(src='js/moment-with-locales.min.js')
+            script(src='js/bootstrap-datetimepicker.min.js')
+
+            block script
