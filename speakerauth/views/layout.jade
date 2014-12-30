@@ -28,12 +28,19 @@ html
                                 a(href='#') Events
                             li(class=isTalkActive)
                                 a(href='#') Talks
-                        form(class='navbar-form navbar-right', role='login')
-                            div.form-group
-                                input(type='text', name='username', class='form-control', placeholder='username')
-                                input(type='password', name='password', class='form-control', placeholder='password')
-                            button(type='submit', class='btn btn-default') Login
+                        if user
+                            div.nav.navbar-right
+                                a(href='/signout', class='btn btn-default navbar-btn') Logout
+                                p.navbar-text= user.username
+                        else
+                            form(class='navbar-form navbar-right', role='login', action='/login', method='POST')
+                                div.form-group
+                                    input(type='text', name='username', class='form-control', placeholder='username')
+                                    input(type='password', name='password', class='form-control', placeholder='password')
+                                button(type='submit', class='btn btn-default') Login
 
+            if message
+                p.text-danger= message
 
             block content
 
