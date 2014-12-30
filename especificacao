@@ -54,8 +54,7 @@ Tarefas:
 
 3 Colocar autenticação no servidor
 	- Dar uma olhada nesse tutorial: http://code.tutsplus.com/tutorials/authenticating-nodejs-applications-with-passport--cms-21619
-	- Se necessário criar tela de cadastro de usuário
-	- Se necessário criar tela de login
+	- Criar tela de cadastro de usuário
 
 4 Criar o modelo de banco de dados:
 	4.1 Criar modelos das entidades no banco
