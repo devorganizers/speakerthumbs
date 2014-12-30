@@ -33,6 +33,9 @@ html
                                 a(href='/signout', class='btn btn-default navbar-btn') Logout
                                 p.navbar-text= user.username
                         else
+                            ul.nav.navbar-nav.navbar-right
+                                li
+                                    a(href='/signup') Cadastre-se!
                             form(class='navbar-form navbar-right', role='login', action='/login', method='POST')
                                 div.form-group
                                     input(type='text', name='username', class='form-control', placeholder='username')
