@@ -1,5 +1,4 @@
 var Talk = require('../models/talk');
-var Event = require('../models/event');
 
 module.exports = function() {
     return {
