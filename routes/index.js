@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var talks = require('../controller/talk')();
 
 var isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -67,9 +68,18 @@ module.exports = function(passport) {
     });
 
     router.get('/talk-list', isAuthenticated, function(req, res) {
-        res.render('talk-list', {
-            user: req.user,
-            isTalkActive: 'active'
+        talks.list(function(err, talks) {
+            if (err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.render('talk-list', {
+                    user: req.user,
+                    isTalkActive: 'active',
+                    talks: talks
+                });
+            }
         });
     });
 
@@ -80,17 +90,37 @@ module.exports = function(passport) {
         });
     });
 
-    router.get('/talk-edit', isAuthenticated, function(req, res) {
-        res.render('talk-edit', {
-            user: req.user,
-            isTalkActive: 'active'
+    router.get('/talk-edit/:id', isAuthenticated, function(req, res) {
+        var id = req.params.id;
+        talks.get(id, function(err, talk) {
+            if (err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.render('talk-edit', {
+                    user: req.user,
+                    isTalkActive: 'active',
+                    talk: talk
+                });
+            }
         });
     });
 
-    router.get('/talk-detail', isAuthenticated, function(req, res) {
-        res.render('talk-detail', {
-            user: req.user,
-            isTalkActive: 'active'
+    router.get('/talk-detail/:id', isAuthenticated, function(req, res) {
+        var id = req.params.id;
+        talks.get(id, function(err, talk) {
+            if (err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.render('talk-detail', {
+                    user: req.user,
+                    isTalkActive: 'active',
+                    talk: talk
+                });
+            }
         });
     });
 

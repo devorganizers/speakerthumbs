@@ -2,15 +2,15 @@ extends layout
 
 block content
     div.container-fluid
-        a(class='btn btn-primary btn-create')
+        a(class='btn btn-primary btn-create' href='/talk-create')
             i.fa.fa-plus-circle
             |  Criar Palestra
         div.list-group
-            each val in [1, 2, 3]
+            each talk in talks
                 span.list-group-item
-                    a(class='btn' href='#')= 'Palestra ' + val
+                    a(class='btn' href='/talk-detail/'+talk._id)= talk.name
                     span
-                        a(class='btn' href='#')
+                        a(class='btn' href='/talk-edit/'+talk._id)
                             i.fa.fa-pencil
                         a(class='btn' href='#')
                             i.fa.fa-trash
