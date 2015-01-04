@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var events = require('../controller/event')();
 var talks = require('../controller/talk')();
 
 var isAuthenticated = function(req, res, next) {
@@ -40,9 +41,18 @@ module.exports = function(passport) {
     });
 
     router.get('/event-list', isAuthenticated, function(req, res) {
-        res.render('event-list', {
-            user: req.user,
-            isEventActive: 'active'
+        events.list(function(err, events) {
+            if (err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.render('event-list', {
+                    user: req.user,
+                    isEventActive: 'active',
+                    events: events
+                });
+            }
         });
     });
 
@@ -53,17 +63,37 @@ module.exports = function(passport) {
         });
     });
 
-    router.get('/event-edit', isAuthenticated, function(req, res) {
-        res.render('event-edit', {
-            user: req.user,
-            isEventActive: 'active'
+    router.get('/event-edit/:id', isAuthenticated, function(req, res) {
+        var id = req.params.id;
+        events.get(id, function(err, event) {
+            if (err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.render('event-edit', {
+                    user: req.user,
+                    isEventActive: 'active',
+                    event: event
+                });
+            }
         });
     });
 
-    router.get('/event-detail', isAuthenticated, function(req, res) {
-        res.render('event-detail', {
-            user: req.user,
-            isEventActive: 'active'
+    router.get('/event-detail/:id', isAuthenticated, function(req, res) {
+        var id = req.params.id;
+        events.get(id, function(err, event) {
+            if (err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.render('event-detail', {
+                    user: req.user,
+                    isEventActive: 'active',
+                    event: event
+                });
+            }
         });
     });
 

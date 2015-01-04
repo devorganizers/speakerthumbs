@@ -6,29 +6,29 @@ block content
             div.form-group
                 label(for='event-name', class='control-label col-sm-2') Nome
                 div.col-sm-10
-                    input(type='text', class='form-control', id='event-name', value='Evento 1', disabled)
+                    input(type='text', class='form-control', id='event-name', value=event.name, disabled)
             div.form-group
                 label(for='event-startdate', class='control-label col-sm-2') Data de início
                 div.col-sm-4
                     div(class='input-group date', id='event-startdate')
-                        input(type='text', class='form-control', value='12/31/2014 23:00')
+                        input(type='text', class='form-control', value=event.startDate)
                         span.input-group-addon
                             span.glyphicon.glyphicon-calendar
             div.form-group
                 label(for='event-enddate', class='control-label col-sm-2') Data de fim
                 div.col-sm-4
                     div(class='input-group date', id='event-enddate')
-                        input(type='text', class='form-control', value='01/01/2015 01:00')
+                        input(type='text', class='form-control', value=event.endDate)
                         span.input-group-addon
                             span.glyphicon.glyphicon-calendar
             div.form-group
                 label(for='event-location', class='control-label col-sm-2') Lugar
                 div.col-sm-10
-                    input(type='text', class='form-control', id='event-location', value='São Paulo/SP')
+                    input(type='text', class='form-control', id='event-location', value=event.location)
             div.form-group
                 label(for='event-description', class='control-label col-sm-2') Descrição
                 div.col-sm-10
-                    textarea(class='form-control', rows='5', id='event-description') Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.
+                    textarea(class='form-control', rows='5', id='event-description')= event.description
             button(type='submit', class='btn btn-primary pull-right') Salvar evento!
 
 block script
