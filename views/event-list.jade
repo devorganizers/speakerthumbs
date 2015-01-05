@@ -3,7 +3,7 @@ extends layout
 block content
     div.container-fluid
         a(class='btn btn-primary btn-create', href='/event-create')
-            i.fa.fa-plus-circle
+            span.glyphicon.glyphicon-plus-sign
             |  Criar Evento
         div.list-group
             each event in events

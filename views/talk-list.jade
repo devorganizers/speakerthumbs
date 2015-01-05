@@ -3,7 +3,7 @@ extends layout
 block content
     div.container-fluid
         a(class='btn btn-primary btn-create' href='/talk-create')
-            i.fa.fa-plus-circle
+            span.glyphicon.glyphicon-plus-sign
             |  Criar Palestra
         div.list-group
             each talk in talks
@@ -11,6 +11,6 @@ block content
                     a(class='btn' href='/talk-detail/'+talk._id)= talk.name
                     span
                         a(class='btn' href='/talk-edit/'+talk._id)
-                            i.fa.fa-pencil
+                            span.glyphicon.glyphicon-pencil
                         a(class='btn' href='#')
-                            i.fa.fa-trash
+                            span.glyphicon.glyphicon-trash
