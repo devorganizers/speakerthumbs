@@ -23,6 +23,7 @@ var isAuthenticated = function(req, res, next) {
 
 var eventToObject = function(model) {
     var obj = {};
+    obj.id = model._id;
     obj.name = model.name;
     obj.startDate = formatDate(model.startDate);
     obj.endDate = formatDate(model.endDate);
@@ -85,7 +86,6 @@ module.exports = function(passport) {
     });
 
     router.post('/event-new', function(req, res) {
-        console.log(req.body.eventStartDate.constructor);
         events.new({
             name: req.body.eventName,
             startDate: req.body.eventStartDate,
@@ -112,6 +112,18 @@ module.exports = function(passport) {
                 });
             }
         });
+    });
+
+    router.post('/event-update', function(req, res) {
+        events.update({
+            id: req.body.eventId,
+            name: req.body.eventName,
+            startDate: req.body.eventStartDate,
+            endDate: req.body.eventEndDate,
+            location: req.body.eventLocation,
+            description: req.body.eventDescription
+        });
+        res.redirect('/event-list');
     });
 
     router.get('/event-detail/:id', isAuthenticated, function(req, res) {

@@ -9,16 +9,33 @@ module.exports = function() {
             Event.findById(id).exec(callback);
         },
         new: function(event) {
-            var new_event = new Event();
-            new_event.name = event.name;
-            new_event.startDate = event.startDate;
-            new_event.endDate = event.endDate;
-            new_event.location = event.location;
-            new_event.description = event.description;
-            new_event.save(function(err) {
+            var newEvent = new Event();
+            newEvent.name = event.name;
+            newEvent.startDate = event.startDate;
+            newEvent.endDate = event.endDate;
+            newEvent.location = event.location;
+            newEvent.description = event.description;
+            newEvent.save(function(err) {
                 if (err) {
                     console.log('Saving event error: ' + err);
                 }
+            });
+        },
+        update: function(event) {
+            Event.findById(event.id, function(err, updatedEvent) {
+                if (err) {
+                    console.log('Retriveing event to update error: ' + err);
+                }
+                updatedEvent.name = event.name;
+                updatedEvent.startDate = event.startDate;
+                updatedEvent.endDate = event.endDate;
+                updatedEvent.location = event.location;
+                updatedEvent.description = event.description;
+                updatedEvent.save(function(err) {
+                    if (err) {
+                        console.log('Updating event error: ' + err);
+                    }
+                });
             });
         }
     }
