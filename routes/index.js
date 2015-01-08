@@ -3,11 +3,32 @@ var router = express.Router();
 var events = require('../controller/event')();
 var talks = require('../controller/talk')();
 
+var formatDate = function(date) {
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    var hour = date.getHours() % 12;
+    hour = hour == 0 ? hour + 12 : hour;
+    var minute = date.getMinutes();
+    var period = date.getHours() > 11 ? 'PM' : 'AM';
+    return month + '/' + day + '/' + year + ' ' + hour + ':' + minute + ' ' + period;
+}
+
 var isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
     res.redirect('/');
+}
+
+var eventToObject = function(model) {
+    var obj = {};
+    obj.name = model.name;
+    obj.startDate = formatDate(model.startDate);
+    obj.endDate = formatDate(model.endDate);
+    obj.location = model.location;
+    obj.description = model.description;
+    return obj;
 }
 
 module.exports = function(passport) {
@@ -63,6 +84,18 @@ module.exports = function(passport) {
         });
     });
 
+    router.post('/event-new', function(req, res) {
+        console.log(req.body.eventStartDate.constructor);
+        events.new({
+            name: req.body.eventName,
+            startDate: req.body.eventStartDate,
+            endDate: req.body.eventEndDate,
+            location: req.body.eventLocation,
+            description: req.body.eventDescription
+        });
+        res.redirect('/event-list');
+    });
+
     router.get('/event-edit/:id', isAuthenticated, function(req, res) {
         var id = req.params.id;
         events.get(id, function(err, event) {
@@ -71,6 +104,7 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
+                event = eventToObject(event);
                 res.render('event-edit', {
                     user: req.user,
                     isEventActive: 'active',
@@ -88,6 +122,7 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
+                event = eventToObject(event);
                 res.render('event-detail', {
                     user: req.user,
                     isEventActive: 'active',
