@@ -23,12 +23,21 @@ var isAuthenticated = function(req, res, next) {
 
 var eventToObject = function(model) {
     var obj = {};
-    obj.id = model._id;
-    obj.name = model.name;
-    obj.startDate = formatDate(model.startDate);
-    obj.endDate = formatDate(model.endDate);
-    obj.location = model.location;
-    obj.description = model.description;
+    if (model._id) obj.id = model._id.toString();
+    if (model.name) obj.name = model.name;
+    if (model.startDate) obj.startDate = formatDate(model.startDate);
+    if (model.endDate) obj.endDate = formatDate(model.endDate);
+    if (model.location) obj.location = model.location;
+    if (model.description) obj.description = model.description;
+    return obj;
+}
+
+var talkToObject = function(model) {
+    var obj = {};
+    if (model._id) obj.id = model._id.toString();
+    if (model.name) obj.name = model.name;
+    if (model.description) obj.description = model.description;
+    if (model.event) obj.event = eventToObject(model.event);
     return obj;
 }
 
@@ -161,10 +170,26 @@ module.exports = function(passport) {
     });
 
     router.get('/talk-create', isAuthenticated, function(req, res) {
-        res.render('talk-create', {
-            user: req.user,
-            isTalkActive: 'active'
+        events.list(function(err, events) {
+            var eventObjs = [];
+            events.forEach(function(event) {
+                eventObjs.push(eventToObject(event));
+            });
+            res.render('talk-create', {
+                user: req.user,
+                isTalkActive: 'active',
+                events: eventObjs
+            });
         });
+    });
+
+    router.post('/talk-new', isAuthenticated, function(req, res) {
+        talks.new({
+            name: req.body.talkName,
+            description: req.body.talkDescription,
+            event: req.body.talkEvent
+        });
+        res.redirect('/talk-list');
     });
 
     router.get('/talk-edit/:id', isAuthenticated, function(req, res) {
@@ -175,13 +200,37 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
-                res.render('talk-edit', {
-                    user: req.user,
-                    isTalkActive: 'active',
-                    talk: talk
+                events.list(function(err, events) {
+                    var eventObjs = [];
+                    events.forEach(function(event) {
+                        eventObjs.push(eventToObject(event));
+                    });
+                    talk = talkToObject(talk);
+                    if (err) {
+                        res.render('error', {
+                            error: err
+                        });
+                    } else {
+                        res.render('talk-edit', {
+                            user: req.user,
+                            isTalkActive: 'active',
+                            talk: talk,
+                            events: eventObjs
+                        });
+                    }
                 });
             }
         });
+    });
+
+    router.post('/talk-update', function(req, res) {
+        talks.update({
+            id: req.body.talkId,
+            name: req.body.talkName,
+            description: req.body.talkDescription,
+            event: req.body.talkEvent
+        });
+        res.redirect('/talk-list');
     });
 
     router.get('/talk-detail/:id', isAuthenticated, function(req, res) {

@@ -2,18 +2,24 @@ extends layout
 
 block content
     div.container-fluid
-        form(class='form-horizontal', role='form')
+        form(class='form-horizontal', role='form', action='/talk-update', method='POST')
             div.form-group
                 label(for='talk-name', class='control-label col-sm-2') Nome
                 div.col-sm-10
                     input(type='text', class='form-control', id='talk-name', value=talk.name, disabled)
+            input(type='hidden', value=talk.name, name='talkName')
             div.form-group
                 label(for='talk-description', class='control-label col-sm-2') Descrição
                 div.col-sm-10
-                    textarea(class='form-control', rows='5', id='talk-description')= talk.description
+                    textarea(class='form-control', rows='5', id='talk-description', name='talkDescription')= talk.description
             div.form-group
                 label(for='talk-event', class='control-label col-sm-2') Evento
                 div.col-sm-10
-                    select(class='form-control', id='talk-event')
-                        option(selected)= talk.event.name
+                    select(class='form-control', id='talk-event', name='talkEvent')
+                        each event in events
+                            if event.id === talk.event.id
+                                option(value=event.id, selected)= event.name
+                            else
+                                option(value=event.id)= event.name
+            input(type='hidden', value=talk.id, name='talkId')
             button(type='submit', class='btn btn-primary pull-right') Salvar palestra!
