@@ -20,13 +20,13 @@ html
                             span.icon-bar
                             span.icon-bar
                             span.icon-bar
-                        a(class='navbar-brand', href='#') SpeakerThumbs
+                        a(class='navbar-brand', href='/') SpeakerThumbs
                     div(id='navbar', class='navbar-collapse collapse')
                         ul.nav.navbar-nav
                             li(class=isEventActive)
-                                a(href='#') Events
+                                a(href='/event-list') Events
                             li(class=isTalkActive)
-                                a(href='#') Talks
+                                a(href='/talk-list') Talks
                         if user
                             div.nav.navbar-right
                                 a(href='/signout', class='btn btn-default navbar-btn') Logout
