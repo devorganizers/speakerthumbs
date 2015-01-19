@@ -37,6 +37,9 @@ module.exports = function() {
                     }
                 });
             });
+        },
+        delete: function(id, callback) {
+            Event.findByIdAndRemove(id, callback);
         }
     }
 }

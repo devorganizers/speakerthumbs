@@ -153,6 +153,18 @@ module.exports = function(passport) {
         });
     });
 
+    router.get('/event-delete/:id', isAuthenticated, function(req, res) {
+        events.delete(req.params.id, function(err) {
+            if(err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.redirect('/event-list');
+            }
+        });
+    });
+
     router.get('/talk-list', isAuthenticated, function(req, res) {
         talks.list(function(err, talks) {
             if (err) {
