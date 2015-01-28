@@ -1,12 +1,15 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser');
 
-var dbConfig = require('./db');
-var mongoose = require('mongoose');
+var dbConfig = require('./db'),
+    mongoose = require('mongoose');
+
+var dotenv = require('dotenv');
+dotenv.load();
 
 mongoose.connect(dbConfig.url);
 
@@ -27,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var passport = require('passport');
 var expressSession = require('express-session');
 app.use(expressSession({
-    secret: 'mySecretKey',
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
 }));
