@@ -70,7 +70,7 @@ module.exports = function(passport) {
         res.redirect('/');
     });
 
-    router.get('/event-list', isAuthenticated, function(req, res) {
+    router.get('/events', isAuthenticated, function(req, res) {
         events.list(function(err, events) {
             if (err) {
                 res.render('error', {
@@ -101,7 +101,7 @@ module.exports = function(passport) {
             location: req.body.eventLocation,
             description: req.body.eventDescription
         });
-        res.redirect('/event-list');
+        res.redirect('/events');
     });
 
     router.get('/event-edit/:id', isAuthenticated, function(req, res) {
@@ -131,7 +131,7 @@ module.exports = function(passport) {
             location: req.body.eventLocation,
             description: req.body.eventDescription
         });
-        res.redirect('/event-list');
+        res.redirect('/events');
     });
 
     router.get('/event-detail/:id', isAuthenticated, function(req, res) {
@@ -159,12 +159,12 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
-                res.redirect('/event-list');
+                res.redirect('/events');
             }
         });
     });
 
-    router.get('/talk-list', isAuthenticated, function(req, res) {
+    router.get('/talks', isAuthenticated, function(req, res) {
         talks.list(function(err, talks) {
             if (err) {
                 res.render('error', {
@@ -200,7 +200,7 @@ module.exports = function(passport) {
             description: req.body.talkDescription,
             event: req.body.talkEvent
         });
-        res.redirect('/talk-list');
+        res.redirect('/talks');
     });
 
     router.get('/talk-edit/:id', isAuthenticated, function(req, res) {
@@ -241,7 +241,7 @@ module.exports = function(passport) {
             description: req.body.talkDescription,
             event: req.body.talkEvent
         });
-        res.redirect('/talk-list');
+        res.redirect('/talks');
     });
 
     router.get('/talk-detail/:id', isAuthenticated, function(req, res) {
@@ -268,7 +268,7 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
-                res.redirect('/talk-list');
+                res.redirect('/talks');
             }
         });
     });
