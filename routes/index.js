@@ -42,7 +42,6 @@ var talkToObject = function(model) {
 }
 
 module.exports = function(passport) {
-    /* GET home page. */
     router.get('/', function(req, res) {
         res.render('index', {
             user: req.user,
@@ -258,6 +257,18 @@ module.exports = function(passport) {
                     isTalkActive: 'active',
                     talk: talk
                 });
+            }
+        });
+    });
+
+    router.get('/talk-delete/:id', isAuthenticated, function(req, res) {
+        talks.delete(req.params.id, function(err) {
+            if(err) {
+                res.render('error', {
+                    error: err
+                });
+            } else {
+                res.redirect('/talk-list');
             }
         });
     });

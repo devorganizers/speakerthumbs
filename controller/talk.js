@@ -33,6 +33,9 @@ module.exports = function() {
                     }
                 });
             });
+        },
+        delete: function(id, callback) {
+            Talk.findByIdAndRemove(id, callback);
         }
     }
 }
