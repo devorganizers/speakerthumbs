@@ -4,11 +4,12 @@ var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function(passport) {
     passport.use('signup', new LocalStrategy({
-        passReqToCallback: true
+        passReqToCallback: true,
+        usernameField: 'email'
     },
-    function(req, username, password, done) {
+    function(req, email, password, done) {
         findOrCreateUser = function() {
-            User.findOne({'username': username}, function(err, user) {
+            User.findOne({'email': email}, function(err, user) {
                 if (err) {
                     console.log('Error in SignUp: ' + err);
                     return done(err);
@@ -19,8 +20,9 @@ module.exports = function(passport) {
                 } else {
                     var newUser = new User();
 
-                    newUser.username = username;
+                    newUser.email = email;
                     newUser.password = createHash(password);
+                    newUser.name = req.body.name;
 
                     newUser.save(function(err) {
                         if (err) {

@@ -28,14 +28,14 @@ html
                         if user
                             div.nav.navbar-right
                                 a(href='/signout', class='btn btn-default navbar-btn') Logout
-                                p.navbar-text= user.username
+                                p.navbar-text= user.name
                         else
                             ul.nav.navbar-nav.navbar-right
                                 li
-                                    a(href='/signup') Cadastre-se!
+                                    a(href='/signup') Sign up!
                             form(class='navbar-form navbar-right', role='login', action='/login', method='POST')
                                 div.form-group
-                                    input(type='text', name='username', class='form-control', placeholder='username')
+                                    input(type='text', name='email', class='form-control', placeholder='email')
                                     input(type='password', name='password', class='form-control', placeholder='password')
                                 button(type='submit', class='btn btn-default') Login
 

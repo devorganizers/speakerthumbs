@@ -4,11 +4,15 @@ block content
     div.container-fluid
         form(class='form-horizontal', role='form', action='/signup', method='POST')
             div.form-group
-                label(for='user-username', class='control-label col-sm-2') Nome de usuário
+                label(for='user-name', class='control-label col-sm-2') Name
                 div.col-sm-10
-                    input(type='text', class='form-control', id='user-username', name='username', placeholder='Nome de usuário')
+                    input(type='text', class='form-control', id='user-name', name='name', placeholder='Full Name')
             div.form-group
-                label(for='user-password', class='control-label col-sm-2') Senha
+                label(for='user-email', class='control-label col-sm-2') Email
                 div.col-sm-10
-                    input(type='password', class='form-control', id='user-password', name='password', placeholder='Senha')
-            button(type='submit', class='btn btn-primary pull-right') Criar usuário!
+                    input(type='text', class='form-control', id='user-email', name='email', placeholder='Email')
+            div.form-group
+                label(for='user-password', class='control-label col-sm-2') Password
+                div.col-sm-10
+                    input(type='password', class='form-control', id='user-password', name='password', placeholder='Password')
+            button(type='submit', class='btn btn-primary pull-right') Sign up!
