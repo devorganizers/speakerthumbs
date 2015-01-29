@@ -11,6 +11,7 @@ module.exports = function() {
         new: function(event) {
             var newEvent = new Event();
             newEvent.name = event.name;
+            newEvent.website = event.website;
             newEvent.startDate = event.startDate;
             newEvent.endDate = event.endDate;
             newEvent.location = event.location;
@@ -27,6 +28,7 @@ module.exports = function() {
                     console.log('Retriveing event to update error: ' + err);
                 }
                 updatedEvent.name = event.name;
+                updatedEvent.website = event.website;
                 updatedEvent.startDate = event.startDate;
                 updatedEvent.endDate = event.endDate;
                 updatedEvent.location = event.location;

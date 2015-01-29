@@ -7,6 +7,10 @@ block content
                 label.detail-label.col-sm-2 Name
                 p.col-sm-10= event.name
             div.form-group
+                label.detail-label.col-sm-2 Website
+                p.col-sm-10 
+                    a(href=event.website target='_blank') #{event.website}
+            div.form-group
                 label.detail-label.col-sm-2 Start date
                 p.col-sm-10= event.startDate
             div.form-group

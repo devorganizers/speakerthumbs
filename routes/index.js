@@ -25,6 +25,7 @@ var eventToObject = function(model) {
     var obj = {};
     if (model._id) obj.id = model._id.toString();
     if (model.name) obj.name = model.name;
+    if (model.website) obj.website = model.website;
     if (model.startDate) obj.startDate = formatDate(model.startDate);
     if (model.endDate) obj.endDate = formatDate(model.endDate);
     if (model.location) obj.location = model.location;
@@ -96,6 +97,7 @@ module.exports = function(passport) {
     router.post('/event-new', function(req, res) {
         events.new({
             name: req.body.eventName,
+            website: req.body.eventWebsite,
             startDate: req.body.eventStartDate,
             endDate: req.body.eventEndDate,
             location: req.body.eventLocation,
@@ -126,6 +128,7 @@ module.exports = function(passport) {
         events.update({
             id: req.body.eventId,
             name: req.body.eventName,
+            website: req.body.eventWebsite,
             startDate: req.body.eventStartDate,
             endDate: req.body.eventEndDate,
             location: req.body.eventLocation,
