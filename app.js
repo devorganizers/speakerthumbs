@@ -1,3 +1,6 @@
+var dotenv = require('dotenv');
+dotenv.load();
+
 var express = require('express'),
     path = require('path'),
     favicon = require('serve-favicon'),
@@ -7,9 +10,6 @@ var express = require('express'),
 
 var dbConfig = require('./db'),
     mongoose = require('mongoose');
-
-var dotenv = require('dotenv');
-dotenv.load();
 
 mongoose.connect(dbConfig.url);
 
