@@ -4,32 +4,32 @@ block content
     div.container-fluid
         form(class='form-horizontal', role='form', action='/event-new', method='POST')
             div.form-group
-                label(for='event-name', class='control-label col-sm-2') Nome
+                label(for='event-name', class='control-label col-sm-2') Name
                 div.col-sm-10
-                    input(type='text', class='form-control', id='event-name', placeholder='Nome do evento', name='eventName')
+                    input(type='text', class='form-control', id='event-name', placeholder='Event name', name='eventName')
             div.form-group
-                label(for='event-startdate', class='control-label col-sm-2') Data de início
+                label(for='event-startdate', class='control-label col-sm-2') Start date
                 div.col-sm-4
                     div(class='input-group date', id='event-startdate')
                         input(type='text', class='form-control', name='eventStartDate')
                         span.input-group-addon
                             span.glyphicon.glyphicon-calendar
             div.form-group
-                label(for='event-enddate', class='control-label col-sm-2') Data de fim
+                label(for='event-enddate', class='control-label col-sm-2') End date
                 div.col-sm-4
                     div(class='input-group date', id='event-enddate')
                         input(type='text', class='form-control', name='eventEndDate')
                         span.input-group-addon
                             span.glyphicon.glyphicon-calendar
             div.form-group
-                label(for='event-location', class='control-label col-sm-2') Lugar
+                label(for='event-location', class='control-label col-sm-2') Location
                 div.col-sm-10
                     input(type='text', class='form-control', id='event-location', placeholder='Lugar', name='eventLocation')
             div.form-group
-                label(for='event-description', class='control-label col-sm-2') Descrição
+                label(for='event-description', class='control-label col-sm-2') Description
                 div.col-sm-10
                     textarea(class='form-control', rows='5', id='event-description', name='eventDescription')
-            button(type='submit', class='btn btn-primary pull-right') Criar evento!
+            button(type='submit', class='btn btn-primary pull-right') Create event!
 
 block script
     script(type='text/javascript').
