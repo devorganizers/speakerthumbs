@@ -4,17 +4,17 @@ block content
     div.container-fluid
         form(class='form-horizontal', role='form', action='/talk-new', method='POST')
             div.form-group
-                label(for='talk-name', class='control-label col-sm-2') Nome
+                label(for='talk-name', class='control-label col-sm-2') Name
                 div.col-sm-10
-                    input(type='text', class='form-control', id='talk-name', placeholder='Nome da palestra', name='talkName')
+                    input(type='text', class='form-control', id='talk-name', placeholder='Talk name', name='talkName')
             div.form-group
-                label(for='talk-description', class='control-label col-sm-2') Descrição
+                label(for='talk-description', class='control-label col-sm-2') Description
                 div.col-sm-10
                     textarea(class='form-control', rows='5', id='talk-description', name='talkDescription')
             div.form-group
-                label(for='talk-event', class='control-label col-sm-2') Evento
+                label(for='talk-event', class='control-label col-sm-2') Event
                 div.col-sm-10
                     select(class='form-control', id='talk-event', name='talkEvent')
                         each event in events
                             option(value=event.id)= event.name
-            button(type='submit', class='btn btn-primary pull-right') Criar palestra!
+            button(type='submit', class='btn btn-primary pull-right') Create talk!
