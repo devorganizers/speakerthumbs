@@ -1,4 +1,5 @@
-var Event = require('../models/event')
+var Event = require('../models/event');
+var Talk = require('../models/talk');
 
 module.exports = function() {
     return {
@@ -41,7 +42,34 @@ module.exports = function() {
             });
         },
         delete: function(id, callback) {
-            Event.findByIdAndRemove(id, callback);
+            Event.findById(id, function(err, event) {
+                // I do not know if this error handling is necessary, I did not test it, but I think it works
+                if (err) {
+                    callback(err);
+                    return;
+                } else {
+                    var error;
+                    Talk.remove({event: id}, function(err) {
+                        if (error) {
+                            return;
+                        }
+                        if (err){
+                            error = err;
+                            return;
+                        }
+                    });
+                    event.remove(function(err) {
+                        if (error) {
+                            return;
+                        }
+                        if (err) {
+                            error = err;
+                            return;
+                        }
+                    });
+                    callback(error);
+                }
+            });
         }
     }
 }
