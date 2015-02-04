@@ -30,6 +30,7 @@ var eventToObject = function(model) {
     if (model.endDate) obj.endDate = formatDate(model.endDate);
     if (model.location) obj.location = model.location;
     if (model.description) obj.description = model.description;
+    if (model.owner) obj.owner = userToObject(model.owner);
     return obj;
 }
 
@@ -39,6 +40,15 @@ var talkToObject = function(model) {
     if (model.name) obj.name = model.name;
     if (model.description) obj.description = model.description;
     if (model.event) obj.event = eventToObject(model.event);
+    if (model.owner) obj.owner = userToObject(model.owner);
+    return obj;
+}
+
+var userToObject = function(model) {
+    var obj = {};
+    if (model._id) obj.id = model._id.toString();
+    if (model.email) obj.email = model.email;
+    if (model.name) obj.name = model.name;
     return obj;
 }
 
@@ -102,7 +112,7 @@ module.exports = function(passport) {
             endDate: req.body.eventEndDate,
             location: req.body.eventLocation,
             description: req.body.eventDescription
-        });
+        }, req.user);
         res.redirect('/events');
     });
 
@@ -133,7 +143,7 @@ module.exports = function(passport) {
             endDate: req.body.eventEndDate,
             location: req.body.eventLocation,
             description: req.body.eventDescription
-        });
+        }, req.user);
         res.redirect('/events');
     });
 
@@ -156,7 +166,7 @@ module.exports = function(passport) {
     });
 
     router.get('/event-delete/:id', isAuthenticated, function(req, res) {
-        events.delete(req.params.id, function(err) {
+        events.delete(req.params.id, req.user, function(err) {
             if(err) {
                 res.render('error', {
                     error: err
@@ -202,7 +212,7 @@ module.exports = function(passport) {
             name: req.body.talkName,
             description: req.body.talkDescription,
             event: req.body.talkEvent
-        });
+        }, req.user);
         res.redirect('/talks');
     });
 
@@ -243,7 +253,7 @@ module.exports = function(passport) {
             name: req.body.talkName,
             description: req.body.talkDescription,
             event: req.body.talkEvent
-        });
+        }, req.user);
         res.redirect('/talks');
     });
 
@@ -265,7 +275,7 @@ module.exports = function(passport) {
     });
 
     router.get('/talk-delete/:id', isAuthenticated, function(req, res) {
-        talks.delete(req.params.id, function(err) {
+        talks.delete(req.params.id, req.user, function(err) {
             if(err) {
                 res.render('error', {
                     error: err

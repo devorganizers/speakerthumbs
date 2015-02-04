@@ -8,34 +8,48 @@ module.exports = function() {
         get: function(id, callback) {
             Talk.findById(id).populate('event').exec(callback);
         },
-        new: function(talk) {
+        new: function(talk, userLogged) {
             var newTalk = new Talk();
             newTalk.name = talk.name;
             newTalk.description = talk.description;
             newTalk.event = talk.event;
+            newTalk.owner = userLogged;
             newTalk.save(function(err) {
                 if (err) {
                     console.log('Saving talk error: ' + err);
                 }
             });
         },
-        update: function(talk) {
+        update: function(talk, userLogged) {
             Talk.findById(talk.id, function(err, updatedTalk) {
                 if (err) {
                     console.log('Retriveing talk to update error: ' + err);
                 }
-                updatedTalk.name = talk.name;
-                updatedTalk.description = talk.description;
-                updatedTalk.event = talk.event;
-                updatedTalk.save(function(err) {
-                    if (err) {
-                        console.log('Updating talk error: ' + err);
-                    }
-                });
+                if (updatedTalk.owner == userLogged._id.toString()) {
+                    updatedTalk.name = talk.name;
+                    updatedTalk.description = talk.description;
+                    updatedTalk.event = talk.event;
+                    updatedTalk.save(function(err) {
+                        if (err) {
+                            console.log('Updating talk error: ' + err);
+                        }
+                    });
+                } else {
+                    console.log('Updating another user\'s talk error.');
+                }
             });
         },
-        delete: function(id, callback) {
-            Talk.findByIdAndRemove(id, callback);
+        delete: function(id, userLogged, callback) {
+            Talk.findById(id).populate('event').exec(function(err, talk) {
+                if (err) {
+                    callback(err);
+                }
+                if (talk.owner == userLogged._id.toString() || talk.event.owner == userLogged._id.toString()) {
+                    talk.remove(callback);
+                } else {
+                    callback({message: 'Deleting another user\'s talk error.'})
+                }
+            });
         }
     }
 }
