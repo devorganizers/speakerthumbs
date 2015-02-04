@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 module.exports = mongoose.model('Event', {
     name: String,
@@ -6,5 +7,6 @@ module.exports = mongoose.model('Event', {
     startDate: Date,
     endDate: Date,
     location: String,
-    description: String
+    description: String,
+    owner: {type: Schema.Types.ObjectId, ref: 'User'}
 });
