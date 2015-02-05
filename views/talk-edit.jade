@@ -3,6 +3,7 @@ extends layout
 block content
     div.container-fluid
         form(class='form-horizontal', role='form', action='/talk-update', method='POST')
+            input(type="hidden", name="_csrf", value="#{csrfToken}")
             div.form-group
                 label(for='talk-name', class='control-label col-sm-2') Name
                 div.col-sm-10

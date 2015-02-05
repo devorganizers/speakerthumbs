@@ -79,7 +79,8 @@ module.exports = function(passport) {
     router.get('/', function(req, res) {
         res.render('index', {
             user: req.user,
-            message: req.flash('message')
+            message: req.flash('message'),
+            csrfToken: req.csrfToken()
         });
     });
 
@@ -90,7 +91,10 @@ module.exports = function(passport) {
     }));
 
     router.get('/signup', function(req, res) {
-        res.render('register', {message: req.flash('message')});
+        res.render('register', { 
+            message: req.flash('message'),
+            csrfToken: req.csrfToken()
+        });
     });
 
     router.post('/signup', passport.authenticate('signup', {
@@ -127,7 +131,8 @@ module.exports = function(passport) {
     router.get('/event-create', isAuthenticated, function(req, res) {
         res.render('event-create', {
             user: req.user,
-            isEventActive: 'active'
+            isEventActive: 'active',
+            csrfToken: req.csrfToken()
         });
     });
 
@@ -155,7 +160,8 @@ module.exports = function(passport) {
                 res.render('event-edit', {
                     user: req.user,
                     isEventActive: 'active',
-                    event: event
+                    event: event,
+                    csrfToken: req.csrfToken()
                 });
             }
         });
@@ -237,7 +243,8 @@ module.exports = function(passport) {
             res.render('talk-create', {
                 user: req.user,
                 isTalkActive: 'active',
-                event: event
+                event: event,
+                csrfToken: req.csrfToken()
             });
         });
     });
@@ -274,7 +281,8 @@ module.exports = function(passport) {
                             user: req.user,
                             isTalkActive: 'active',
                             talk: talk,
-                            events: eventObjs
+                            events: eventObjs,
+                            csrfToken: req.csrfToken()
                         });
                     }
                 });

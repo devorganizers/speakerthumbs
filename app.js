@@ -44,6 +44,9 @@ app.use(passport.session());
 var flash = require('connect-flash');
 app.use(flash());
 
+var csrf = require('csurf');
+app.use(csrf());
+
 var initPassport = require('./passport/init');
 initPassport(passport);
 
@@ -63,11 +66,18 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+        if (err.code === 'EBADCSRFTOKEN') {
+            // handle CSRF token errors here
+            res.status(403)
+            res.send('session has expired or form tampered with')
+        }
+        else {
+            res.status(err.status || 500);
+            res.render('error', {
+                message: err.message,
+                error: err
+            });
+        }
     });
 }
 
