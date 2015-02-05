@@ -3,10 +3,10 @@ var Talk = require('../models/talk');
 module.exports = function() {
     return {
         list: function(filters, callback) {
-            Talk.find(filters).populate('event').exec(callback);
+            Talk.find(filters).populate('event owner').exec(callback);
         },
         get: function(id, callback) {
-            Talk.findById(id).populate('event').exec(callback);
+            Talk.findById(id).populate('event owner').exec(callback);
         },
         new: function(talk, userLogged) {
             var newTalk = new Talk();

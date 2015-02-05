@@ -63,7 +63,7 @@ var setEventIsDeleteableAndUpdatable = function(event, userLogged) {
 }
 
 var setTalkIsDeleteableAndUpdatable = function(talk, userLogged) {
-    if (talk.owner == userLogged._id.toString()) {
+    if (talk.owner._id.toString() == userLogged._id.toString()) {
         talk.isDeleteable = true;
         talk.isUpdatable = true;
     } else if (talk.event.owner == userLogged._id.toString()) {
