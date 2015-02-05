@@ -2,8 +2,8 @@ var Talk = require('../models/talk');
 
 module.exports = function() {
     return {
-        list: function(callback) {
-            Talk.find().exec(callback);
+        list: function(filters, callback) {
+            Talk.find(filters).exec(callback);
         },
         get: function(id, callback) {
             Talk.findById(id).populate('event').exec(callback);
@@ -45,7 +45,9 @@ module.exports = function() {
                     callback(err);
                 }
                 if (talk.owner == userLogged._id.toString() || talk.event.owner == userLogged._id.toString()) {
-                    talk.remove(callback);
+                    talk.remove(function(err) {
+                        callback(err, talk.event._id.toString());
+                    });
                 } else {
                     callback({message: 'Deleting another user\'s talk error.'})
                 }

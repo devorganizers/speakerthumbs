@@ -175,12 +175,18 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
-                event = eventToObject(event);
-                res.render('event-detail', {
-                    user: req.user,
-                    isEventActive: 'active',
-                    event: event
-                });
+                talks.list({event: event}, function(err, talks) {
+                    talks.forEach(function(talk) {
+                        setTalkIsDeleteable(talk, req.user);
+                    });
+                    event = eventToObject(event);
+                    res.render('event-detail', {
+                        user: req.user,
+                        isEventActive: 'active',
+                        event: event,
+                        talks: talks
+                    });
+                })
             }
         });
     });
@@ -198,7 +204,7 @@ module.exports = function(passport) {
     });
 
     router.get('/talks', isAuthenticated, function(req, res) {
-        talks.list(function(err, talks) {
+        talks.list({}, function(err, talks) {
             if (err) {
                 res.render('error', {
                     error: err
@@ -217,16 +223,14 @@ module.exports = function(passport) {
         });
     });
 
-    router.get('/talk-create', isAuthenticated, function(req, res) {
-        events.list(function(err, events) {
-            var eventObjs = [];
-            events.forEach(function(event) {
-                eventObjs.push(eventToObject(event));
-            });
+    router.get('/talk-create/:eventId', isAuthenticated, function(req, res) {
+        var eventId = req.params.eventId;
+        events.get(eventId, function(err, event) {
+            event = eventToObject(event);
             res.render('talk-create', {
                 user: req.user,
                 isTalkActive: 'active',
-                events: eventObjs
+                event: event
             });
         });
     });
@@ -237,7 +241,7 @@ module.exports = function(passport) {
             description: req.body.talkDescription,
             event: req.body.talkEvent
         }, req.user);
-        res.redirect('/talks');
+        res.redirect('/event-detail/' + req.body.talkEvent);
     });
 
     router.get('/talk-edit/:id', isAuthenticated, function(req, res) {
@@ -278,7 +282,7 @@ module.exports = function(passport) {
             description: req.body.talkDescription,
             event: req.body.talkEvent
         }, req.user);
-        res.redirect('/talks');
+        res.redirect('/event-detail/' + req.body.talkEvent);
     });
 
     router.get('/talk-detail/:id', isAuthenticated, function(req, res) {
@@ -299,13 +303,13 @@ module.exports = function(passport) {
     });
 
     router.get('/talk-delete/:id', isAuthenticated, function(req, res) {
-        talks.delete(req.params.id, req.user, function(err) {
+        talks.delete(req.params.id, req.user, function(err, eventId) {
             if(err) {
                 res.render('error', {
                     error: err
                 });
             } else {
-                res.redirect('/talks');
+                res.redirect('/event-detail/' + eventId);
             }
         });
     });

@@ -22,3 +22,38 @@ block content
             div.form-group
                 label.detail-label.col-sm-2 Description
                 p.justified.col-sm-10= event.description
+        a(class='btn btn-primary btn-create' href='/talk-create/'+event.id)
+            span.glyphicon.glyphicon-plus-sign
+            |  Create Talk
+        div.list-group
+            each talk in talks
+                span.list-group-item
+                    a(class='btn' href='/talk-detail/'+talk._id)= talk.name
+                    span
+                        a(class='btn' href='/talk-edit/'+talk._id)
+                            span.glyphicon.glyphicon-pencil
+                        if talk.isDeleteable
+                            a(class='btn', data-toggle='modal', data-target='#deleteModal', data-talk-id=talk._id.toString())
+                                span.glyphicon.glyphicon-trash
+
+    div(class='modal', id='deleteModal', tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true')
+        div.modal-dialog.modal-sm
+            div.modal-content
+                div.modal-header
+                    button(type='button', class='close', data-dismiss='modal', aria-label='close')
+                        span(aria-hidden='true') &times;
+                    h4(class='modal-title', id='deleteModalLabel') Do you really want to delete?
+                div(class='modal-body row' style='text-align: center;')
+                    div.col-xs-6
+                        a(class='btn btn-success', href='#') Yes
+                    div.col-xs-6
+                        a(class='btn btn-danger', data-dismiss='modal') No
+
+block script
+    script(type='text/javascript').
+        $('#deleteModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var talkId = button.data('talk-id');
+            var modal = $(this);
+            modal.find('.modal-body a.btn-success').attr('href', '/talk-delete/' + talkId);
+        });

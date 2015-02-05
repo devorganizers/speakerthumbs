@@ -12,9 +12,7 @@ block content
                 div.col-sm-10
                     textarea(class='form-control', rows='5', id='talk-description', name='talkDescription')
             div.form-group
-                label(for='talk-event', class='control-label col-sm-2') Event
-                div.col-sm-10
-                    select(class='form-control', id='talk-event', name='talkEvent')
-                        each event in events
-                            option(value=event.id)= event.name
+                label.detail-label.col-sm-2 Event
+                p.col-sm-10= event.name
+            input(type='hidden', name='talkEvent', value=event.id)
             button(type='submit', class='btn btn-primary pull-right') Create talk!
