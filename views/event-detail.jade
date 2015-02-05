@@ -30,8 +30,9 @@ block content
                 span.list-group-item
                     a(class='btn' href='/talk-detail/'+talk._id)= talk.name
                     span
-                        a(class='btn' href='/talk-edit/'+talk._id)
-                            span.glyphicon.glyphicon-pencil
+                        if talk.isUpdatable
+                            a(class='btn' href='/talk-edit/'+talk._id)
+                                span.glyphicon.glyphicon-pencil
                         if talk.isDeleteable
                             a(class='btn', data-toggle='modal', data-target='#deleteModal', data-talk-id=talk._id.toString())
                                 span.glyphicon.glyphicon-trash

@@ -52,19 +52,26 @@ var userToObject = function(model) {
     return obj;
 }
 
-var setEventIsDeleteable = function(event, userLogged) {
+var setEventIsDeleteableAndUpdatable = function(event, userLogged) {
     if (event.owner == userLogged._id.toString()) {
         event.isDeleteable = true;
+        event.isUpdatable = true;
     } else {
         event.isDeleteable = false;
+        event.isUpdatable = false;
     }
 }
 
-var setTalkIsDeleteable = function(talk, userLogged) {
-    if (talk.owner == userLogged._id.toString() || talk.event.owner == userLogged._id.toString()) {
+var setTalkIsDeleteableAndUpdatable = function(talk, userLogged) {
+    if (talk.owner == userLogged._id.toString()) {
         talk.isDeleteable = true;
+        talk.isUpdatable = true;
+    } else if (talk.event.owner == userLogged._id.toString()) {
+        talk.isDeleteable = true;
+        talk.isUpdatable = false;
     } else {
         talk.isDeleteable = false;
+        talk.isUpdatable = false;
     }
 }
 
@@ -106,7 +113,7 @@ module.exports = function(passport) {
             } else {
                 var userLogged = req.user;
                 events.forEach(function(event) {
-                    setEventIsDeleteable(event, userLogged);
+                    setEventIsDeleteableAndUpdatable(event, userLogged);
                 });
                 res.render('event-list', {
                     user: req.user,
@@ -177,7 +184,7 @@ module.exports = function(passport) {
             } else {
                 talks.list({event: event}, function(err, talks) {
                     talks.forEach(function(talk) {
-                        setTalkIsDeleteable(talk, req.user);
+                       setTalkIsDeleteableAndUpdatable(talk, req.user);
                     });
                     event = eventToObject(event);
                     res.render('event-detail', {
@@ -186,7 +193,7 @@ module.exports = function(passport) {
                         event: event,
                         talks: talks
                     });
-                })
+                });
             }
         });
     });
@@ -212,7 +219,7 @@ module.exports = function(passport) {
             } else {
                 var userLogged = req.user;
                 talks.forEach(function(talk) {
-                    setTalkIsDeleteable(talk, userLogged);
+                    setTalkIsDeleteableAndUpdatable(talk, userLogged);
                 });
                 res.render('talk-list', {
                     user: req.user,

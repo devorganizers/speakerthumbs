@@ -10,8 +10,9 @@ block content
                 span.list-group-item
                     a(class='btn' href='/event-detail/'+event._id)= event.name
                     span
-                        a(class='btn' href='/event-edit/'+event._id)
-                            span.glyphicon.glyphicon-pencil
+                        if event.isUpdatable
+                            a(class='btn' href='/event-edit/'+event._id)
+                                span.glyphicon.glyphicon-pencil
                         if event.isDeleteable
                             a(class='btn', data-toggle='modal', data-target='#deleteModal', data-event-id=event._id.toString())
                                 span.glyphicon.glyphicon-trash

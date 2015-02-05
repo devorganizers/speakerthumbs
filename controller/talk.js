@@ -3,7 +3,7 @@ var Talk = require('../models/talk');
 module.exports = function() {
     return {
         list: function(filters, callback) {
-            Talk.find(filters).exec(callback);
+            Talk.find(filters).populate('event').exec(callback);
         },
         get: function(id, callback) {
             Talk.findById(id).populate('event').exec(callback);
