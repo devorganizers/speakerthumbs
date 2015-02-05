@@ -52,6 +52,22 @@ var userToObject = function(model) {
     return obj;
 }
 
+var setEventIsDeleteable = function(event, userLogged) {
+    if (event.owner == userLogged._id.toString()) {
+        event.isDeleteable = true;
+    } else {
+        event.isDeleteable = false;
+    }
+}
+
+var setTalkIsDeleteable = function(talk, userLogged) {
+    if (talk.owner == userLogged._id.toString() || talk.event.owner == userLogged._id.toString()) {
+        talk.isDeleteable = true;
+    } else {
+        talk.isDeleteable = false;
+    }
+}
+
 module.exports = function(passport) {
     router.get('/', function(req, res) {
         res.render('index', {
@@ -88,6 +104,10 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
+                var userLogged = req.user;
+                events.forEach(function(event) {
+                    setEventIsDeleteable(event, userLogged);
+                });
                 res.render('event-list', {
                     user: req.user,
                     isEventActive: 'active',
@@ -184,6 +204,10 @@ module.exports = function(passport) {
                     error: err
                 });
             } else {
+                var userLogged = req.user;
+                talks.forEach(function(talk) {
+                    setTalkIsDeleteable(talk, userLogged);
+                });
                 res.render('talk-list', {
                     user: req.user,
                     isTalkActive: 'active',

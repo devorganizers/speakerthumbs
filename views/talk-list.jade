@@ -12,8 +12,9 @@ block content
                     span
                         a(class='btn' href='/talk-edit/'+talk._id)
                             span.glyphicon.glyphicon-pencil
-                        a(class='btn', data-toggle='modal', data-target='#deleteModal', data-talk-id=talk._id.toString())
-                            span.glyphicon.glyphicon-trash
+                        if talk.isDeleteable
+                            a(class='btn', data-toggle='modal', data-target='#deleteModal', data-talk-id=talk._id.toString())
+                                span.glyphicon.glyphicon-trash
 
     div(class='modal', id='deleteModal', tabindex='-1', role='dialog', aria-labelledby='deleteModalLabel', aria-hidden='true')
         div.modal-dialog.modal-sm
