@@ -1,3 +1,4 @@
 node_modules/
+passport/auth.js
 npm-debug.log
 .env
