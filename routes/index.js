@@ -103,6 +103,18 @@ module.exports = function(passport) {
         failureFlash: true
     }));
 
+    router.get('/auth/facebook', passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
+    router.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
     router.get('/signout', function(req, res) {
         req.logout();
         res.redirect('/');

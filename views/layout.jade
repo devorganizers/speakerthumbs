@@ -32,6 +32,8 @@ html
                         else
                             ul.nav.navbar-nav.navbar-right
                                 li
+                                    a(href="/auth/facebook") Login via Facebook
+                                li
                                     a(href='/signup') Sign up!
                             form(class='navbar-form navbar-right', role='login', action='/login', method='POST')
                                 input(type="hidden", name="_csrf", value="#{csrfToken}")
