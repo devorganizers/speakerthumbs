@@ -10,9 +10,8 @@ module.exports = function(passport) {
     }, function(accessToken, refreshToken, profile, done) {
         User.findOne({oauthId: profile.id}, function(err, user) {
             if (err) {
-                return done(err);
-            }
-            if (!user) {
+                done(err);
+            } else if (!user) {
                 var newUser = new User();
                 newUser.name = profile.displayName;
                 newUser.oauthId = profile.id;
@@ -20,11 +19,11 @@ module.exports = function(passport) {
                     if (err) {
                         console.log(err);
                     } else {
-                        return done(null, newUser);
+                        done(null, newUser);
                     }
                 });
             } else {
-                return done(null, user);
+                done(null, user);
             }
         })
     }));

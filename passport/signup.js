@@ -12,11 +12,10 @@ module.exports = function(passport) {
             User.findOne({'email': email}, function(err, user) {
                 if (err) {
                     console.log('Error in SignUp: ' + err);
-                    return done(err);
-                }
-                if (user) {
+                    done(err);
+                } else if (user) {
                     console.log('User already exists');
-                    return done(null, false, req.flash('message', 'User Already Exists'));
+                    done(null, false, req.flash('message', 'User Already Exists'));
                 } else {
                     var newUser = new User();
 
@@ -30,7 +29,7 @@ module.exports = function(passport) {
                             throw err;
                         }
                         console.log('User Registration succesful');
-                        return done(null, newUser);
+                        done(null, newUser);
                     });
                 }
             });

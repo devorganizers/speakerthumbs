@@ -11,17 +11,16 @@ module.exports = function(passport) {
         User.findOne({'email': email},
             function(err, user) {
                 if (err) {
-                    return done(err);
-                }
-                if (!user) {
+                    done(err);
+                } else if (!user) {
                     console.log('User Not Found with email ' + email);
-                    return done(null, false, req.flash('message', 'User Not found.'));
-                }
-                if (!isValidPassword(user, password)) {
+                    done(null, false, req.flash('message', 'User Not found.'));
+                } else if (!isValidPassword(user, password)) {
                     console.log('Invalid Password');
-                    return done(null, false, req.flash('message', 'Invalid Password'));
+                    done(null, false, req.flash('message', 'Invalid Password'));
+                } else {
+                    done(null, user);
                 }
-                return done(null, user);
             }
         );
     }));
