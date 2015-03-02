@@ -127,6 +127,18 @@ module.exports = function(passport) {
         failureFlash: true
     }));
 
+    router.get('/auth/github', passport.authenticate('github', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
+    router.get('/auth/github/callback', passport.authenticate('github', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
     router.get('/signout', function(req, res) {
         req.logout();
         res.redirect('/');
