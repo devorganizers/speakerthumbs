@@ -3,6 +3,11 @@ var ids = {
         clientID: 'put your client ID here',
         clientSecret: 'put your client secret here',
         callbackURL: 'http://localhost:3001/auth/facebook/callback'
+    },
+    twitter: {
+        consumerKey: 'put your consumer key here',
+        consumerSecret: 'put your consumer secret here',
+        callbackURL: 'http://localhost:3001/auth/twitter/callback'
     }
 }
 

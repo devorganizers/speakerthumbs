@@ -115,6 +115,18 @@ module.exports = function(passport) {
         failureFlash: true
     }));
 
+    router.get('/auth/twitter', passport.authenticate('twitter', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
+    router.get('/auth/twitter/callback', passport.authenticate('twitter', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
     router.get('/signout', function(req, res) {
         req.logout();
         res.redirect('/');
