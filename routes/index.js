@@ -139,6 +139,22 @@ module.exports = function(passport) {
         failureFlash: true
     }));
 
+    router.get('/auth/google', passport.authenticate('google', {
+        scope: [
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+        ],
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
+    router.get('/auth/google/callback', passport.authenticate('google', {
+        successRedirect: '/',
+        failureRedirect: '/',
+        failureFlash: true
+    }));
+
     router.get('/signout', function(req, res) {
         req.logout();
         res.redirect('/');

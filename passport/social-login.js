@@ -2,6 +2,7 @@ var config = require('./auth');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 var GithubStrategy = require('passport-github').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var User = require('../models/user');
 
 var findOrCreateNewUser = function(accessToken, refreshToken, profile, done) {
@@ -42,5 +43,11 @@ module.exports = function(passport) {
         clientID: config.github.clientID,
         clientSecret: config.github.clientSecret,
         callbackURL: config.github.callbackURL
+    }, findOrCreateNewUser));
+
+    passport.use(new GoogleStrategy({
+        clientID: config.google.clientID,
+        clientSecret: config.google.clientSecret,
+        callbackURL: config.google.callbackURL
     }, findOrCreateNewUser));
 }
