@@ -9,6 +9,7 @@ html
 
         link(rel='stylesheet', href='/css/bootstrap.min.css')
         link(rel='stylesheet', href='/css/bootstrap-datetimepicker.min.css')
+        link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
         link(rel='stylesheet', href='/css/style.css')
     body
         div.container
@@ -32,13 +33,19 @@ html
                         else
                             ul.nav.navbar-nav.navbar-right
                                 li
-                                    a(href="/auth/facebook") Login via Facebook
+                                    p.navbar-text Social logins:
                                 li
-                                    a(href="/auth/twitter") Login via Twitter
+                                    a(href="/auth/facebook")
+                                        i.fa.fa-facebook-official
                                 li
-                                    a(href="/auth/github") Login via Github
+                                    a(href="/auth/twitter")
+                                        i.fa.fa-twitter
                                 li
-                                    a(href="/auth/google") Login via Google
+                                    a(href="/auth/github")
+                                        i.fa.fa-github
+                                li
+                                    a(href="/auth/google")
+                                        i.fa.fa-google
                                 li
                                     a(href='/signup') Sign up!
                             form(class='navbar-form navbar-right', role='login', action='/login', method='POST')
