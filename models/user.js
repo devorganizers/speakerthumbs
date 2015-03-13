@@ -4,5 +4,10 @@ module.exports = mongoose.model('User', {
     email: String,
     password: String,
     name: String,
-    oauthId: Number
+    socialOauthIds: {
+    	github: String,
+    	google: String,
+    	facebook: String,
+    	twitter: String
+    }
 });

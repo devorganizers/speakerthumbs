@@ -6,20 +6,14 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var User = require('../models/user');
 
 var findOrCreateNewUser = function(accessToken, refreshToken, profile, done) {
-    User.findOne({oauthId: profile.id}, function(err, user) {
+    User.findOne({ $or:[ {'socialOauthIds.twitter':profile.id}, 
+                    {'socialOauthIds.github':profile.id}, 
+                    {'socialOauthIds.facebook':profile.id},
+                    {'socialOauthIds.google':profile.id}]}, function(err, user) {
         if (err) {
             done(err);
         } else if (!user) {
-            var newUser = new User();
-            newUser.name = profile.displayName;
-            newUser.oauthId = profile.id;
-            newUser.save(function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    done(null, newUser);
-                }
-            });
+            done(null, null, profile);
         } else {
             done(null, user);
         }

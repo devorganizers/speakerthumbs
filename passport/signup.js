@@ -23,6 +23,9 @@ module.exports = function(passport) {
                     newUser.password = createHash(password);
                     newUser.name = req.body.name;
 
+                    if(req.body.socialNetwork)
+                        newUser.socialOauthIds[req.body.socialNetwork] = req.body.socialLoginOauthId;
+
                     newUser.save(function(err) {
                         if (err) {
                             console.log('Error in Saving user: ' + err);

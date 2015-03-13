@@ -103,41 +103,23 @@ module.exports = function(passport) {
         failureFlash: true
     }));
 
-    router.get('/auth/facebook', passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/facebook', passport.authenticate('facebook'));
 
-    router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/facebook/callback', function(req, res, next) {
+        socialCallback(req, res, next, 'facebook');
+    });
 
-    router.get('/auth/twitter', passport.authenticate('twitter', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/twitter', passport.authenticate('twitter'));
 
-    router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/twitter/callback', function(req, res, next) {
+        socialCallback(req, res, next, 'twitter');
+    });
 
-    router.get('/auth/github', passport.authenticate('github', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/github', passport.authenticate('github'));
 
-    router.get('/auth/github/callback', passport.authenticate('github', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/github/callback', function(req, res, next) {
+        socialCallback(req, res, next, 'github');    
+    });
 
     router.get('/auth/google', passport.authenticate('google', {
         scope: [
@@ -149,11 +131,26 @@ module.exports = function(passport) {
         failureFlash: true
     }));
 
-    router.get('/auth/google/callback', passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/',
-        failureFlash: true
-    }));
+    router.get('/auth/google/callback', function(req, res, next) {
+        socialCallback(req, res, next, 'google');    
+    });
+
+    function socialCallback(req, res, next, socialNetwork) {
+        passport.authenticate(socialNetwork, function(err, user, profile) {
+            if (err) { return next(err); }
+            if (!user) { 
+                res.render('register', {
+                    socialNetwork: socialNetwork,
+                    profile: profile,
+                    csrfToken: req.csrfToken()
+                });
+            }
+            req.login(user, function(err) {
+                if (err) { return next(err); }
+                return res.redirect('/');
+            });
+        })(req, res, next, socialNetwork);
+    } 
 
     router.get('/signout', function(req, res) {
         req.logout();
