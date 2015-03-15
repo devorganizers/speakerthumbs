@@ -91,7 +91,7 @@ module.exports = function(passport) {
     }));
 
     router.get('/signup', function(req, res) {
-        res.render('register', { 
+        res.render('signup', { 
             message: req.flash('message'),
             csrfToken: req.csrfToken()
         });
@@ -139,7 +139,7 @@ module.exports = function(passport) {
         passport.authenticate(socialNetwork, function(err, user, profile) {
             if (err) { return next(err); }
             if (!user) { 
-                res.render('register', {
+                res.render('signup', {
                     socialNetwork: socialNetwork,
                     profile: profile,
                     csrfToken: req.csrfToken()
