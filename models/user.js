@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+		Schema = mongoose.Schema,
+		passportLocalMongooseEmail = require('passport-local-mongoose-email');
 
-module.exports = mongoose.model('User', {
-    email: String,
-    password: String,
+var User = mongoose.model('User', {
     name: String,
     socialOauthIds: {
     	github: String,
@@ -11,3 +11,9 @@ module.exports = mongoose.model('User', {
     	twitter: String
     }
 });
+
+User.plugin(passportLocalMongooseEmail, {
+	usernameField: "email"
+});
+
+module.exports = mongoose.model('User', User);

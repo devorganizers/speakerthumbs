@@ -3,16 +3,9 @@ var signup = require('./signup');
 var socialLogin = require('./social-login');
 var User = require('../models/user');
 
-module.exports = function(passport) {
-    passport.serializeUser(function(user, done) {
-        done(null, user._id);
-    });
-
-    passport.deserializeUser(function(id, done) {
-        User.findById(id, function(err, user) {
-            done(err, user);
-        });
-    });
+module.exports = function(passport) {    
+    passport.serializeUser(User.serializeUser());
+    passport.deserializeUser(User.deserializeUser());
 
     login(passport);
     signup(passport);
