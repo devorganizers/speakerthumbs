@@ -1,8 +1,8 @@
 var mongoose = require('mongoose'),
-		Schema = mongoose.Schema,
-		passportLocalMongooseEmail = require('passport-local-mongoose-email');
+	Schema = mongoose.Schema,
+	passportLocalMongooseEmail = require('passport-local-mongoose-email');
 
-var User = mongoose.model('User', {
+var User = new Schema({
     name: String,
     socialOauthIds: {
     	github: String,

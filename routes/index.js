@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var sendgrid = require('sendgrid')(process.env.SENDGRID_USERNAME, process.env.SENDGRID_PASSWORD);
 var events = require('../controller/event')();
 var talks = require('../controller/talk')();
+var User = require('../models/user');
 
 var formatDate = function(date) {
     var month = date.getMonth() + 1;
@@ -84,7 +86,7 @@ module.exports = function(passport) {
         });
     });
 
-    router.post('/login', passport.authenticate('login', {
+    router.post('/login', passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/',
         failureFlash: true
@@ -97,11 +99,48 @@ module.exports = function(passport) {
         });
     });
 
-    router.post('/signup', passport.authenticate('signup', {
-        successRedirect: '/',
-        failureRedirect: '/signup',
-        failureFlash: true
-    }));
+    router.post('/signup', function(req, res) {
+        var user = new User();
+        user.name = req.body.name;
+        user.email = req.body.email;
+        user.socialOauthIds[req.body.socialNetwork] = req.body.socialLoginOauthId;
+        User.register(user, req.body.password, function(err, user) {
+            if (err) {
+                return res.render("signup", {info: "Sorry. That username already exists. Try again."});
+            }
+
+            //send email verification
+            var authenticationURL = 'http://' + process.env.HOST + ':' + process.env.PORT + '/verify?authToken=' + user.authToken;
+            sendgrid.send({
+                to:       user.email,
+                from:     'emailauth@yourdomain.com',
+                subject:  'Confirm your email',
+                html:     '<a target=_blank href=\"' + authenticationURL + '\">Confirm your email</a>'
+            }, function(err, json) {
+                if (err) { return console.error(err); }
+
+                res.redirect('/email-verification');
+            });
+        });
+    });
+
+    router.get('/email-verification', function(req, res) {
+        res.render('email-verification', {
+            title: 'Email verification sent!',
+            csrfToken: req.csrfToken()
+        });
+    });
+
+    router.get('/verify', function(req, res) {
+        User.verifyEmail(req.query.authToken, function(err, existingAuthToken) {
+            if(err) console.log('err:', err);
+
+            res.render('email-verification', {
+                title : 'Email verified succesfully!',
+                csrfToken: req.csrfToken()
+            });
+        });
+    });
 
     router.get('/auth/facebook', passport.authenticate('facebook'));
 

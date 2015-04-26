@@ -7,7 +7,7 @@ module.exports = function(passport) {
     passport.serializeUser(User.serializeUser());
     passport.deserializeUser(User.deserializeUser());
 
-    login(passport);
-    signup(passport);
+    passport.use(User.createStrategy());
+
     socialLogin(passport);
 }
