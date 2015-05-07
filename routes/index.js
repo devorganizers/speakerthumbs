@@ -106,7 +106,12 @@ module.exports = function(passport) {
         user.socialOauthIds[req.body.socialNetwork] = req.body.socialLoginOauthId;
         User.register(user, req.body.password, function(err, user) {
             if (err) {
-                return res.render("signup", {info: "Sorry. That username already exists. Try again."});
+                return res.render('signup', {
+                    message: 'Sorry. That username already exists. Try again.',
+                    socialNetwork: req.body.socialNetwork,
+                    socialLoginOauthId: req.body.socialLoginOauthId,
+                    csrfToken: req.csrfToken()
+                });
             }
 
             //send email verification
@@ -122,6 +127,32 @@ module.exports = function(passport) {
                 res.redirect('/email-verification');
             });
         });
+    });
+
+    router.post('/connect-account', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info) {
+            if (err) {
+                return next(err);
+            }
+            if (!user) {
+                res.render('signup', {
+                    message: 'invalid email or password',
+                    socialNetwork: req.body.socialNetwork,
+                    socialLoginOauthId: req.body.socialLoginOauthId,
+                    csrfToken: req.csrfToken()
+
+                });
+            } else {
+                user.socialOauthIds[req.body.socialNetwork] = req.body.socialLoginOauthId;
+                user.save(function(err) {
+                    if (err) {
+                        next(err);
+                    } else {
+                        res.redirect('/');
+                    }
+                });
+            }
+        })(req, res, next);
     });
 
     router.get('/email-verification', function(req, res) {
@@ -180,7 +211,7 @@ module.exports = function(passport) {
             if (!user) { 
                 res.render('signup', {
                     socialNetwork: socialNetwork,
-                    profile: profile,
+                    socialLoginOauthId: profile.id,
                     csrfToken: req.csrfToken()
                 });
             } else {
