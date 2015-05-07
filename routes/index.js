@@ -183,11 +183,12 @@ module.exports = function(passport) {
                     profile: profile,
                     csrfToken: req.csrfToken()
                 });
+            } else {
+                req.login(user, function(err) {
+                    if (err) { return next(err); }
+                    return res.redirect('/');
+                });
             }
-            req.login(user, function(err) {
-                if (err) { return next(err); }
-                return res.redirect('/');
-            });
         })(req, res, next, socialNetwork);
     } 
 
