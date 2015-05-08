@@ -9,3 +9,12 @@
 .justified {
 	text-align: justify;
 }
+
+h3 {
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+.capitalize-network {
+	text-transform: capitalize;
+}

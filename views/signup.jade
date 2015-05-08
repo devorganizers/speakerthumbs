@@ -3,36 +3,32 @@ extends layout
 block content
     div.container-fluid
         if socialNetwork
-            h1 connect your #{socialNetwork} account to your speakerthumbs account
+            h3 Connect your #[span.capitalize-network #{socialNetwork}] account to your SpeakerThumbs account
             form(class='form-horizontal', role='form', action='/connect-account', method='POST')
                 input(type="hidden", name="_csrf", value="#{csrfToken}")
                 input(type="hidden", name="socialLoginOauthId", value="#{socialLoginOauthId}")
                 input(type="hidden", name="socialNetwork", value="#{socialNetwork}")
                 div.form-group
-                    label(for='user-email', class='control-label col-sm-2') Email
-                    div.col-sm-10
+                    div.col-sm-3
                         input(type='text', class='form-control', id='user-email', name='email', placeholder='Email')
                 div.form-group
-                    label(for='user-password', class='control-label col-sm-2') Password
-                    div.col-sm-10
+                    div.col-sm-3
                         input(type='password', class='form-control', id='user-password', name='password', placeholder='Password')
-                button(type='submit', class='btn btn-primary pull-right') Connect my account!
-            h1 if you don't have an account, create one
+                button(type='submit', class='btn btn-primary') Connect my account!
+                div.clearfix
+        h3 Create a new account
         form(class='form-horizontal', role='form', action='/signup', method='POST')
             input(type="hidden", name="_csrf", value="#{csrfToken}")
             if socialNetwork
                 input(type="hidden", name="socialLoginOauthId", value="#{socialLoginOauthId}")
                 input(type="hidden", name="socialNetwork", value="#{socialNetwork}")
             div.form-group
-                label(for='user-name', class='control-label col-sm-2') Name
-                div.col-sm-10
+                div.col-sm-3
                     input(type='text', class='form-control', id='user-name', name='name', placeholder='Full Name')
             div.form-group
-                label(for='user-email', class='control-label col-sm-2') Email
-                div.col-sm-10
+                div.col-sm-3
                     input(type='text', class='form-control', id='user-email', name='email', placeholder='Email')
             div.form-group
-                label(for='user-password', class='control-label col-sm-2') Password
-                div.col-sm-10
+                div.col-sm-3
                     input(type='password', class='form-control', id='user-password', name='password', placeholder='Password')
-            button(type='submit', class='btn btn-primary pull-right') Sign up!
+            button(type='submit', class='btn btn-primary') Sign up!
