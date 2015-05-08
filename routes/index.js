@@ -107,7 +107,7 @@ module.exports = function(passport) {
         User.register(user, req.body.password, function(err, user) {
             if (err) {
                 return res.render('signup', {
-                    message: 'Sorry. That username already exists. Try again.',
+                    message: 'Sorry. That email already exists. Try again.',
                     socialNetwork: req.body.socialNetwork,
                     socialLoginOauthId: req.body.socialLoginOauthId,
                     csrfToken: req.csrfToken()
