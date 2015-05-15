@@ -8,10 +8,10 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser');
 
-var dbConfig = require('./db'),
-    mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
-mongoose.connect(dbConfig.url);
+var mongodburl = process.env.MONGODB_URL;
+mongoose.connect(mongodburl);
 
 var app = express();
 
@@ -35,7 +35,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     store: new MongoStore({
-        url: dbConfig.url
+        url: mongodburl
     })
 }));
 app.use(passport.initialize());
@@ -68,8 +68,8 @@ if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         if (err.code === 'EBADCSRFTOKEN') {
             // handle CSRF token errors here
-            res.status(403)
-            res.send('session has expired or form tampered with')
+            res.status(403);
+            res.send('session has expired or form tampered with');
         }
         else {
             res.status(err.status || 500);
