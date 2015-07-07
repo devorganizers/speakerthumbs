@@ -9,6 +9,7 @@ var host = process.env.AZK_HOST || process.env.HOST;
 var port = process.env.HTTP_PORT || process.env.PORT;
 
 var hostname = "http://" + host;
+
 if (!process.env.AZK_HOST) {
   hostname = hostname + ":" + port;
 }
