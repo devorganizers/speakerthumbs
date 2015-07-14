@@ -122,18 +122,32 @@ module.exports = function(passport) {
                 });
             }
 
-            //send email verification
-            var authenticationURL = hostname + '/verify?authToken=' + user.authToken;
-            sendgrid.send({
-                to:       user.email,
-                from:     'emailauth@yourdomain.com',
-                subject:  'Confirm your email',
-                html:     '<a target=_blank href=\"' + authenticationURL + '\">Confirm your email</a>'
-            }, function(err, json) {
-                if (err) { return console.error(err); }
+            if (req.body.socialNetwork && req.body.socialLoginOauthId) {
+                // skips email verification
+                User.verifyEmail(user.authToken, function(err, user) {
+                    if(err) {
+                        next(err);
+                    } else {
+                        req.login(user, function(err) {
+                            if (err) { return next(err); }
+                            return res.redirect('/');
+                        });
+                    }
+                });
+            } else {
+                //send email verification
+                var authenticationURL = hostname + '/verify?authToken=' + user.authToken;
+                sendgrid.send({
+                    to:       user.email,
+                    from:     'emailauth@yourdomain.com',
+                    subject:  'Confirm your email',
+                    html:     '<a target=_blank href=\"' + authenticationURL + '\">Confirm your email</a>'
+                }, function(err, json) {
+                    if (err) { return console.error(err); }
 
-                res.redirect('/email-verification');
-            });
+                    res.redirect('/email-verification');
+                });
+            }
         });
     });
 
@@ -156,7 +170,11 @@ module.exports = function(passport) {
                     if (err) {
                         next(err);
                     } else {
-                        res.redirect('/');
+                        // logs user in when a social account is connected
+                        req.login(user, function(err) {
+                            if (err) { return next(err); }
+                            return res.redirect('/');
+                        });
                     }
                 });
             }
@@ -171,13 +189,16 @@ module.exports = function(passport) {
     });
 
     router.get('/verify', function(req, res) {
-        User.verifyEmail(req.query.authToken, function(err, existingAuthToken) {
-            if(err) console.log('err:', err);
-
-            res.render('email-verification', {
-                title : 'Email verified succesfully!',
-                csrfToken: req.csrfToken()
-            });
+        User.verifyEmail(req.query.authToken, function(err, user) {
+            if(err) {
+                next(err);
+            } else {
+                // logs user in when email isi verified
+                req.login(user, function(err) {
+                    if (err) { return next(err); }
+                    return res.redirect('/');
+                });
+            }
         });
     });
 
