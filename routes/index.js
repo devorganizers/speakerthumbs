@@ -5,23 +5,31 @@ var events = require('../controller/event')();
 var talks = require('../controller/talk')();
 var User = require('../models/user');
 
+var host = process.env.AZK_HOST || process.env.HOST;
+var port = process.env.HTTP_PORT || process.env.PORT;
+
+var hostname = "http://" + host;
+if (!process.env.AZK_HOST) {
+  hostname = hostname + ":" + port;
+}
+
 var formatDate = function(date) {
     var month = date.getMonth() + 1;
     var day = date.getDate();
     var year = date.getFullYear();
     var hour = date.getHours() % 12;
-    hour = hour == 0 ? hour + 12 : hour;
+    hour = hour === 0 ? hour + 12 : hour;
     var minute = date.getMinutes();
     var period = date.getHours() > 11 ? 'PM' : 'AM';
     return month + '/' + day + '/' + year + ' ' + hour + ':' + minute + ' ' + period;
-}
+};
 
 var isAuthenticated = function(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
     res.redirect('/');
-}
+};
 
 var eventToObject = function(model) {
     var obj = {};
@@ -34,7 +42,7 @@ var eventToObject = function(model) {
     if (model.description) obj.description = model.description;
     if (model.owner) obj.owner = userToObject(model.owner);
     return obj;
-}
+};
 
 var talkToObject = function(model) {
     var obj = {};
@@ -44,7 +52,7 @@ var talkToObject = function(model) {
     if (model.event) obj.event = eventToObject(model.event);
     if (model.owner) obj.owner = userToObject(model.owner);
     return obj;
-}
+};
 
 var userToObject = function(model) {
     var obj = {};
@@ -52,7 +60,7 @@ var userToObject = function(model) {
     if (model.email) obj.email = model.email;
     if (model.name) obj.name = model.name;
     return obj;
-}
+};
 
 var setEventIsDeleteableAndUpdatable = function(event, userLogged) {
     if (event.owner == userLogged._id.toString()) {
@@ -62,7 +70,7 @@ var setEventIsDeleteableAndUpdatable = function(event, userLogged) {
         event.isDeleteable = false;
         event.isUpdatable = false;
     }
-}
+};
 
 var setTalkIsDeleteableAndUpdatable = function(talk, userLogged) {
     if (talk.owner._id.toString() == userLogged._id.toString()) {
@@ -75,7 +83,7 @@ var setTalkIsDeleteableAndUpdatable = function(talk, userLogged) {
         talk.isDeleteable = false;
         talk.isUpdatable = false;
     }
-}
+};
 
 module.exports = function(passport) {
     router.get('/', function(req, res) {
@@ -115,7 +123,7 @@ module.exports = function(passport) {
             }
 
             //send email verification
-            var authenticationURL = 'http://' + process.env.HOST + ':' + process.env.PORT + '/verify?authToken=' + user.authToken;
+            var authenticationURL = hostname + '/verify?authToken=' + user.authToken;
             sendgrid.send({
                 to:       user.email,
                 from:     'emailauth@yourdomain.com',
@@ -450,4 +458,4 @@ module.exports = function(passport) {
     });
 
     return router;
-}
+};
