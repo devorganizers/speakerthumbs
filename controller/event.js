@@ -79,6 +79,9 @@ module.exports = function() {
                     callback({message: 'Deleting another user\'s event error.'});
                 }
             });
-        }
-    }
-}
+        },
+        findOneAndUpdate: function(id, newParams, upsert, callback) {
+            Event.findOneAndUpdate({_id: id}, newParams, { upsert: upsert }, callback);
+        },
+    };
+};
