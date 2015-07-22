@@ -36,6 +36,7 @@ module.exports = function() {
                     updatedEvent.endDate = event.endDate;
                     updatedEvent.location = event.location;
                     updatedEvent.description = event.description;
+                    updatedEvent.isTalkOpen = event.isTalkOpen;
                     updatedEvent.save(function(err) {
                         if (err) {
                             console.log('Updating event error: ' + err);

@@ -8,5 +8,6 @@ module.exports = mongoose.model('Event', {
     endDate: Date,
     location: String,
     description: String,
+    isTalkOpen: {type: Boolean, default: true},
     owner: {type: Schema.Types.ObjectId, ref: 'User'}
 });

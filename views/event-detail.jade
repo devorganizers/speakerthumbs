@@ -22,9 +22,16 @@ block content
             div.form-group
                 label.detail-label.col-sm-2 Description
                 p.justified.col-sm-10= event.description
-        a(class='btn btn-primary btn-create' href='/talk-create/'+event.id)
-            span.glyphicon.glyphicon-plus-sign
-            |  Create Talk
+        if event.isTalkOpen
+            a(class='btn btn-primary btn-create' href='/talk-create/'+event.id)
+                span.glyphicon.glyphicon-plus-sign
+                |  Create Talk
+            if event.isDeleteable
+                a(class='btn btn-primary btn-create' href='/event-talks-close/'+event.id)
+                    span.glyphicon.glyphicon-minus-sign
+                    |  Close Talk Submission
+        else
+            p Talk submissions are closed
         div.list-group
             each talk in talks
                 span.list-group-item

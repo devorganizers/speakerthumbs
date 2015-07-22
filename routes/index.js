@@ -40,6 +40,7 @@ var eventToObject = function(model) {
     if (model.endDate) obj.endDate = formatDate(model.endDate);
     if (model.location) obj.location = model.location;
     if (model.description) obj.description = model.description;
+    if (model.isTalkOpen) obj.isTalkOpen = model.isTalkOpen;
     if (model.owner) obj.owner = userToObject(model.owner);
     return obj;
 };
@@ -296,6 +297,8 @@ module.exports = function(passport) {
     });
 
     router.post('/event-update', function(req, res) {
+      var isTalkOpen = true;
+      if(!req.body.isTalkOpen) isTalkOpen = false;
         events.update({
             id: req.body.eventId,
             name: req.body.eventName,
@@ -303,7 +306,8 @@ module.exports = function(passport) {
             startDate: req.body.eventStartDate,
             endDate: req.body.eventEndDate,
             location: req.body.eventLocation,
-            description: req.body.eventDescription
+            description: req.body.eventDescription,
+            isTalkOpen: isTalkOpen
         }, req.user);
         res.redirect('/events');
     });
@@ -317,10 +321,11 @@ module.exports = function(passport) {
                 });
             } else {
                 talks.list({event: event}, function(err, talks) {
+                    var userLogged = req.user;
                     talks.forEach(function(talk) {
-                       setTalkIsDeleteableAndUpdatable(talk, req.user);
+                       setTalkIsDeleteableAndUpdatable(talk, userLogged);
                     });
-                    event = eventToObject(event);
+                    setEventIsDeleteableAndUpdatable(event, userLogged);
                     res.render('event-detail', {
                         user: req.user,
                         isEventActive: 'active',
@@ -342,6 +347,18 @@ module.exports = function(passport) {
                 res.redirect('/events');
             }
         });
+    });
+    
+    router.get('/event-talks-close/:id', isAuthenticated, function(req, res) {
+      events.findOneAndUpdate(req.params.id, { isTalkOpen: false }, true, function(err, doc) {
+          if(err) {
+              res.render('error', {
+                  error: err
+              });
+          } else {
+            res.redirect('/event-detail/' + req.params.id);
+          }
+      });
     });
 
     router.get('/talks', isAuthenticated, function(req, res) {
