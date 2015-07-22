@@ -49,9 +49,9 @@ module.exports = function() {
                         callback(err, talk.event._id.toString());
                     });
                 } else {
-                    callback({message: 'Deleting another user\'s talk error.'})
+                    callback({message: 'Deleting another user\'s talk error.'});
                 }
             });
         }
-    }
-}
+    };
+};
